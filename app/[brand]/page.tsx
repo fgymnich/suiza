@@ -11,6 +11,8 @@ import { getBrandData } from "@/lib/getBrandData"
 import { getBrandCategories } from "@/lib/getBrandCategories"
 import { useState } from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
+import { useParams } from "next/navigation"
+
 
 interface BrandPageProps {
   params: {
@@ -18,10 +20,11 @@ interface BrandPageProps {
   }
 }
 
-export default function BrandPage({ params }: BrandPageProps) {
-  const brandData = getBrandData(params.brand)
+export default function BrandPage() {
+  const params = useParams()
+  const brandData = getBrandData(params.brand as string)
 
-  const brandCategories = getBrandCategories(params.brand)
+  const brandCategories = getBrandCategories(params.brand as string)
 
   const [expandedCards, setExpandedCards] = useState<{ [key: number]: boolean }>({})
 

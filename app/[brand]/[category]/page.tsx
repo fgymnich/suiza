@@ -12,6 +12,7 @@ import { getBrandCategories } from "@/lib/getBrandCategories"
 import { getCategoryProducts } from "@/lib/getCategoryProducts"
 import { useState } from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
+import { useParams } from "next/navigation"
 
 interface CategoryPageProps {
   params: {
@@ -20,11 +21,12 @@ interface CategoryPageProps {
   }
 }
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const brandData = getBrandData(params.brand)
+export default function CategoryPage() {
+  const params = useParams()
+  const brandData = getBrandData(params.brand as string)
 
   // Get all categories for this brand
-  const categories = getBrandCategories(params.brand)
+  const categories = getBrandCategories(params.brand as string)
 
   // Find category matching the slug param (slugify your titles the same way you do in URLs)
   const slugify = (str: string) =>
@@ -36,14 +38,14 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       .replace(/[^\w-]+/g, "") // Remove all non-word characters except dashes
 
   const categoryData = categories.find(
-    (cat) => slugify(cat.title) === slugify(decodeURIComponent(params.category)),
+    (cat) => slugify(cat.title) === slugify(decodeURIComponent(params.category as string)),
   ) || {
     title: "Categoría no encontrada",
     description: "",
     image: "/placeholder.svg",
   }
 
-  const products = getCategoryProducts(slugify(params.brand), slugify(decodeURIComponent(params.category)))
+  const products = getCategoryProducts(slugify(params.brand as string), slugify(decodeURIComponent(params.category as string)))
 
   const [expandedCards, setExpandedCards] = useState<{ [key: number]: boolean }>({})
 
