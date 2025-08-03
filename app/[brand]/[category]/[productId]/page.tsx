@@ -11,6 +11,8 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { getBrandData } from "@/lib/getBrandData"
 import { getBrandCategories } from "@/lib/getBrandCategories"
+import { getCategoryProducts } from "@/lib/getCategoryProducts"
+import { useParams} from "next/navigation"
 
 // Mock product data - in a real app, this would come from a database or API
 const getProductData = (brand: string, category: string, productId: string) => {
@@ -106,17 +108,11 @@ interface ProductPageProps {
   }
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const brandData = getBrandData(params.brand)
-  const product = getProductData(params.brand, params.category, params.productId)
-  const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
-    description: false, // Start with description section not expanded
-  })
-  const [selectedSize, setSelectedSize] = useState(0)
-  const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+export default function ProductPage() {
+  const params = useParams()
+  const brandData = getBrandData(params.brand as string)
 
-  // Get category data for breadcrumb
-  const categories = getBrandCategories(params.brand)
+  // Find category matching the slug param (slugify your titles the same way you do in URLs)
   const slugify = (str: string) =>
     str
       .toLowerCase()
@@ -125,8 +121,34 @@ export default function ProductPage({ params }: ProductPageProps) {
       .replace(/\s+/g, "-")
       .replace(/[^\w-]+/g, "") // Remove all non-word characters except dashes
 
+  const brandSlug = slugify(params.brand as string)
+  const categorySlug = slugify(decodeURIComponent(params.category as string))
+  const productSlug = slugify(decodeURIComponent(params.productId as string))
+  
+  const categoryProduct = getCategoryProducts(brandSlug, categorySlug).find(
+    (product) => slugify(product.name) === productSlug
+  )
+  
+  if (!categoryProduct) {
+    console.error("Product not found!", {
+      brandSlug,
+      categorySlug,
+      productSlug,
+      available: getCategoryProducts(brandSlug, categorySlug).map(p => slugify(p.name)),
+    })
+  }
+  const product = getProductData(params.brand as string, params.category as string, params.productId as string)
+  const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
+    description: false, // Start with description section not expanded
+  })
+  const [selectedSize, setSelectedSize] = useState(0)
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+
+  // Get category data for breadcrumb
+  const categories = getBrandCategories(params.brand as string)
+
   const categoryData = categories.find(
-    (cat) => slugify(cat.title) === slugify(decodeURIComponent(params.category)),
+    (cat) => slugify(cat.title) === slugify(decodeURIComponent(params.category as string)),
   ) || {
     title: "Categoría",
     description: "",
@@ -238,7 +260,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
               {/* Expandable Sections */}
               <div className="space-y-4">
-                {Object.entries(product.sections).map(([key, section]) => (
+                {Object.entries(product.sections).map(([key, section]: [string, any]) => (
                   <AnimatedText key={key} delay={100}>
                     <div className="border border-gray-200 rounded-lg overflow-hidden">
                       <button
@@ -268,7 +290,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                           {key === "availableSizes" ? (
                             <div className="space-y-4">
                               <div className="flex gap-4 flex-wrap">
-                                {product.availableSizes?.map((size, index) => (
+                                {product.availableSizes?.map((size: any, index: number) => (
                                   <button
                                     key={index}
                                     onClick={() => setSelectedSize(index)}
