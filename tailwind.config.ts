@@ -130,6 +130,26 @@ const config: Config = {
     'opacity-0',
     'opacity-100',
     
+    // Hover opacity modifiers (for hover:bg-${color}/10)
+    'hover:bg-red-600/10',
+    'hover:bg-blue-600/10',
+    'hover:bg-indigo-800/10',
+    'hover:bg-cyan-600/10',
+    'hover:bg-cyan-700/10',
+    'hover:bg-pink-400/10',
+    'hover:bg-purple-600/10',
+    'hover:bg-purple-500/10',
+    
+    // Hover opacity modifiers (for hover:bg-${color}/90)
+    'hover:bg-red-600/90',
+    'hover:bg-blue-600/90',
+    'hover:bg-indigo-800/90',
+    'hover:bg-cyan-600/90',
+    'hover:bg-cyan-700/90',
+    'hover:bg-pink-400/90',
+    'hover:bg-purple-600/90',
+    'hover:bg-purple-500/90',
+    
     // Responsive classes
     'sm:grid-cols-2',
     'lg:grid-cols-3',
@@ -145,6 +165,8 @@ const config: Config = {
     'font-myriad-pro',
     'font-bold',
     'font-semibold',
+    'font-poppins',
+    'font-open-sans',
     'text-xs',
     'text-sm',
     'text-base',
@@ -152,6 +174,12 @@ const config: Config = {
     'text-xl',
     'text-3xl',
     'text-5xl',
+    
+    // Conditional text size classes
+    'text-base',
+    'text-lg',
+    'text-sm',
+    'text-xs',
     
     // Spacing and layout
     'container',
@@ -248,6 +276,11 @@ const config: Config = {
     'bg-gradient-to-r',
     'bg-gradient-to-br',
     'bg-gradient-to-t',
+    
+    // Pattern-based safelist for text sizes (to catch all conditional text classes)
+    {
+      pattern: /^text-(xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)$/,
+    },
   ],
   prefix: "",
   theme: {
