@@ -203,7 +203,7 @@ export default function ProductPage() {
             {categoryData.title}
           </Link>
           <span>/</span>
-          <span className={`text-${brandData.colors.accent} font-semibold`}>{product.name}</span>
+          <span className={`text-${brandData.colors.accent} font-semibold`}>{categoryProduct?.name}</span>
         </div>
       </div>
 
@@ -220,11 +220,11 @@ export default function ProductPage() {
                     onClick={() => setIsImageModalOpen(true)}
                   >
                     <Image
-                      src={product.availableSizes?.[selectedSize]?.image || "/placeholder.svg"}
-                      alt={product.name}
+                      src={categoryProduct?.image[selectedSize] || "/placeholder.svg"}
+                      alt={categoryProduct?.name || "undefined"}
                       width={400}
                       height={500}
-                      className="w-full h-auto object-contain hover:scale-105 transition-transform duration-300"
+                      className="w-full h-auto object-contain scale-[1.3] transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-black/0 hover:bg-black/5 transition-colors duration-300 rounded-2xl"></div>
                   </div>
@@ -243,9 +243,9 @@ export default function ProductPage() {
                     className={`text-center bg-gradient-to-r from-${brandData.colors.accent} to-${brandData.colors.accent} text-white p-6 rounded-lg`}
                   >
                     <h1 className="text-2xl lg:text-3xl font-bold font-myriad-pro mb-2">
-                      {product.name}
-                      {product.availableSizes?.[selectedSize]?.weight && (
-                        <> ({product.availableSizes[selectedSize].weight})</>
+                      {categoryProduct?.name}
+                      {categoryProduct?.sizes[selectedSize] && (
+                        <> ({categoryProduct?.sizes[selectedSize]})</>
                       )}
                     </h1>
                     <p className={`text-${brandData.colors.text} font-myriad-pro text-2xl`}>
@@ -290,7 +290,7 @@ export default function ProductPage() {
                           {key === "availableSizes" ? (
                             <div className="space-y-4">
                               <div className="flex gap-4 flex-wrap">
-                                {product.availableSizes?.map((size: any, index: number) => (
+                                {categoryProduct?.sizes.map((size: any, index: number) => (
                                   <button
                                     key={index}
                                     onClick={() => setSelectedSize(index)}
@@ -300,7 +300,7 @@ export default function ProductPage() {
                                         : `bg-white text-${brandData.colors.accent} border-${brandData.colors.accent} hover:bg-${brandData.colors.accent}/10`
                                     }`}
                                   >
-                                    {size.weight}
+                                    {size}
                                   </button>
                                 ))}
                               </div>
@@ -374,7 +374,7 @@ export default function ProductPage() {
           onClick={() => setIsImageModalOpen(false)}
         >
           <div
-            className="relative max-w-4xl max-h-[90vh] bg-white rounded-2xl p-4 shadow-2xl"
+            className="relative max-w-7xl max-h-[95vh] bg-white rounded-2xl p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -383,17 +383,19 @@ export default function ProductPage() {
             >
               ×
             </button>
-            <Image
-              src={product.availableSizes?.[selectedSize]?.image || "/placeholder.svg"}
-              alt={product.name}
-              width={800}
-              height={1000}
-              className="w-full h-auto object-contain max-h-[80vh]"
-            />
-            <div className="text-center mt-4">
+            <div className="text-center mb-8">
               <h3 className="text-xl font-bold font-myriad-pro text-gray-800">
-                {product.name} ({product.availableSizes?.[selectedSize]?.weight})
+                {categoryProduct?.name} ({categoryProduct?.sizes[selectedSize]})
               </h3>
+            </div>
+            <div className="max-h-[80vh] overflow-hidden flex items-center justify-center">
+              <Image
+                src={categoryProduct?.image[selectedSize] || "/placeholder.svg"}
+                alt={categoryProduct?.name || "undefined"}
+                width={800}
+                height={1000}
+                className="w-full max-h-[80vh] scale-[1.2] object-contain max-h-[80vh]"
+              />
             </div>
           </div>
         </div>

@@ -53,7 +53,7 @@ export default function BrandPage() {
 
       {/* Brand Banner - Compact Design with White Center Fade */}
       <section className="relative overflow-hidden">
-        <div className={`bg-gradient-to-r ${brandData.colors.primary} py-2 relative`}>
+        <div className={`bg-gradient-to-r ${brandData.colors.primary} py-2 relative min-h-[9rem] flex items-center`}>
           {/* White center fade overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
           <div className="container mx-auto px-6 relative z-10">

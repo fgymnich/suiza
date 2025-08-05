@@ -78,7 +78,7 @@ export default function CategoryPage() {
 
       {/* Brand Banner - Compact Design with White Center Fade */}
       <section className="relative overflow-hidden">
-        <div className={`bg-gradient-to-r ${brandData.colors.primary} py-2 relative`}>
+        <div className={`bg-gradient-to-r ${brandData.colors.primary} py-2 relative min-h-[9rem] flex items-center`}>
           {/* White center fade overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
           <div className="container mx-auto px-6 relative z-10">
@@ -98,7 +98,7 @@ export default function CategoryPage() {
       </section>
 
       {/* Category Header */}
-      <section className="py-16 bg-white">
+      <section className="py-8 mt-4 bg-white">
         <div className="container mx-auto px-6">
           <AnimatedText>
             <div className="text-center mb-4">
@@ -112,7 +112,7 @@ export default function CategoryPage() {
       </section>
 
       {/* Products Grid */}
-      <section className="py-0 bg-gray-50">
+      <section className="py-8 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto items-start">
             {products.map((product, index) => (
@@ -122,7 +122,7 @@ export default function CategoryPage() {
                     <Link href={product.href} className="block">
                       <div className="relative overflow-hidden bg-gray-100 flex-1">
                         <Image
-                          src={product.image || "/placeholder.svg"}
+                          src={product.image[0] || "/placeholder.svg"}
                           alt={product.name}
                           width={400}
                           height={300}
